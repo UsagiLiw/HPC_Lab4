@@ -40,23 +40,50 @@ int main(int argc, char* argv[])
 	MPI_Init(&argc, &argv);
 	MPI_Comm_rank(MPI_COMM_WORLD, &id);
 	MPI_Comm_size(MPI_COMM_WORLD, &nP);
-
+	
 	if (id == 0)
 	{
 		ptrA = fopen("matAsmall.txt", "r");
+
+		fgets(strA, BUFFSIZE, ptrA);
+		sscanf(strA, "%d %d", &cA, &rA);
+
+		fgets(strB, BUFFSIZE, ptrB);
+		sscanf(strB, "%d %d", &cB, &rB);
+
+		n = ceil( (float) rA / (float) nP);
+
+		printf("%d %d|%d and %d|%d\n", n, cA, rA, cB, rB);
+
+		
+		dataA = (float**)malloc(rA * sizeof(float*));
+		for (i = 0; i < rA; i++)
+			dataA[i] = (float*)malloc(cA * sizeof(float));
+
+		dataB = (float**)malloc(rA * sizeof(float*));
+		for (i = 0; i < rB; i++)
+			dataB[i] = (float*)malloc(cA * sizeof(float));
+
+		while (fgets(strA, BUFFSIZE, ptrA) && fgets(strB, BUFFSIZE, ptrB))
+		{
+			
+		}
+	}
+	else if (id == 1)
+	{
 		ptrB = fopen("matBsmall.txt", "r");
 
 		fgets(strA, BUFFSIZE, ptrA);
 		sscanf(strA, "%d %d", &cA, &rA);
 
-		fgets(strB, BUFFSIZE, ptrA);
+		fgets(strB, BUFFSIZE, ptrB);
 		sscanf(strB, "%d %d", &cB, &rB);
 
-		n = rA / nP;
+		n = ceil((float)rA / (float)nP);
 
 		printf("%d %d|%d and %d|%d\n", n, cA, rA, cB, rB);
 
-		/*
+
 		dataA = (float**)malloc(rA * sizeof(float*));
 		for (i = 0; i < rA; i++)
 			dataA[i] = (float*)malloc(cA * sizeof(float));
@@ -68,7 +95,7 @@ int main(int argc, char* argv[])
 		while (fgets(strA, BUFFSIZE, ptrA) && fgets(strB, BUFFSIZE, ptrB))
 		{
 
-		}*/
+		}
 	}
 	else
 	{
